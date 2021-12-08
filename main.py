@@ -1,9 +1,13 @@
+from typing import List, Tuple
+
 import uvicorn
-from fastapi import FastAPI, status
+from fastapi import Depends, FastAPI, status
 from tortoise.contrib.fastapi import register_tortoise
 
+# modules import
 from app.models import ArticleTortoise
 from app.schemas import ArticleBase, ArticleCreate, ArticleDB, ArticlePartialUpdate
+from app.utils import get_article_or_404, pagination
 
 api = FastAPI()
 
@@ -13,6 +17,17 @@ api = FastAPI()
 async def create_article(article: ArticleCreate):
     article_db = await ArticleTortoise.create(**article.dict())
     return ArticleDB.from_orm(article_db)
+
+
+# get all articles
+@api.get("/articles", response_model=List[ArticleBase], status_code=status.HTTP_200_OK)
+async def get_articles(pagination: Tuple[int, int] = Depends(pagination)) -> List[ArticleDB]:
+    skip, limit = pagination
+    articles = await ArticleTortoise.all().offset(skip).limit(limit)
+
+    results = [ArticleDB.from_orm(article) for article in articles]
+
+    return results
 
 
 # add tortoise ORM Config
