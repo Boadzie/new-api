@@ -6,6 +6,9 @@ authors = ["Daniel Boadzie <boadziedaniel43@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+fastapi = "^0.70.0"
+uvicorn = {extras = ["standard"], version = "^0.15.0"}
+tortoise-orm = "^0.17.8"
 
 [tool.poetry.dev-dependencies]
 black = "^21.12b0"
