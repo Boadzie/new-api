@@ -21,10 +21,34 @@ async def create_article(article: ArticleCreate):
 
 # get all articles
 @api.get("/articles", response_model=List[ArticleDB])
-async def get_articles(skip: int = 0, limit: int = 100, sort: List[Tuple[str, str]] = None):
+async def get_articles(pagination: Tuple[int, int] = Depends(pagination)) -> List[ArticleDB]:
+    skip, limit = pagination
     articles = await ArticleTortoise.all().offset(skip).limit(limit)
     results = [ArticleDB.from_orm(article) for article in articles]
     return results
+
+
+# get a single article
+@api.get("/articles/{article_id}", response_model=ArticleDB)
+async def get_article(article_id: int) -> ArticleDB:
+    article = await get_article_or_404(article_id)
+    return ArticleDB.from_orm(article)
+
+
+# update an article
+@api.patch("/articles/{article_id}", response_model=ArticleDB)
+async def update_article(
+    article_update: ArticlePartialUpdate, article: ArticleTortoise = Depends(get_article_or_404)
+) -> ArticleDB:
+    article.update_from_dict(article_update.dict(exclude_unset=True))
+    await article.save()
+    return ArticleDB.from_orm(article)
+
+
+# delete an article
+@api.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_article(article: ArticleTortoise = Depends(get_article_or_404)):
+    await article.delete()
 
 
 # add tortoise ORM Config
