@@ -20,13 +20,10 @@ async def create_article(article: ArticleCreate):
 
 
 # get all articles
-@api.get("/articles", response_model=List[ArticleBase], status_code=status.HTTP_200_OK)
-async def get_articles(pagination: Tuple[int, int] = Depends(pagination)) -> List[ArticleDB]:
-    skip, limit = pagination
+@api.get("/articles", response_model=List[ArticleDB])
+async def get_articles(skip: int = 0, limit: int = 100, sort: List[Tuple[str, str]] = None):
     articles = await ArticleTortoise.all().offset(skip).limit(limit)
-
     results = [ArticleDB.from_orm(article) for article in articles]
-
     return results
 
 
