@@ -9,18 +9,35 @@ from app.models import ArticleTortoise
 from app.schemas import ArticleCreate, ArticleDB, ArticlePartialUpdate
 from app.utils import get_article_or_404, pagination
 
-api = FastAPI()
+# openapi_tags
+tags_metadata = [
+    {
+        "name": "Articles",
+        "description": "<h4>CRUD operation for Articles.<h4>",
+    }
+]
+
+api = FastAPI(
+    openapi_tags=tags_metadata,
+    title="Newsman",
+    description="<h3>News API with Articles, Comments and Best Practices<h3>",
+    contact={
+        "name": "Daniel Boadzie",
+        "url": "https://boadzie.netlify.app",
+        "email": "boadzie@gmail.com",
+    },
+)
 
 
 # create a new article
-@api.post("/articles", response_model=ArticleDB, status_code=status.HTTP_201_CREATED)
+@api.post("/articles", response_model=ArticleDB, status_code=status.HTTP_201_CREATED, tags=["articles"])
 async def create_article(article: ArticleCreate) -> List[ArticleDB]:
     article_db = await ArticleTortoise.create(**article.dict())
     return ArticleDB.from_orm(article_db)
 
 
 # get all articles
-@api.get("/articles", response_model=List[ArticleDB])
+@api.get("/articles", response_model=List[ArticleDB], tags=["articles"])
 async def get_articles(pagination: Tuple[int, int] = Depends(pagination)) -> List[ArticleDB]:
     skip, limit = pagination
     articles = await ArticleTortoise.all().offset(skip).limit(limit)
@@ -29,14 +46,14 @@ async def get_articles(pagination: Tuple[int, int] = Depends(pagination)) -> Lis
 
 
 # get a single article
-@api.get("/articles/{article_id}", response_model=ArticleDB)
+@api.get("/articles/{article_id}", response_model=ArticleDB, tags=["articles"])
 async def get_article(article_id: int) -> ArticleDB:
     article = await get_article_or_404(article_id)
     return ArticleDB.from_orm(article)
 
 
 # update an article
-@api.patch("/articles/{article_id}", response_model=ArticleDB)
+@api.patch("/articles/{article_id}", response_model=ArticleDB, tags=["articles"])
 async def update_article(
     article_update: ArticlePartialUpdate,
     article: ArticleTortoise = Depends(get_article_or_404),
@@ -47,7 +64,7 @@ async def update_article(
 
 
 # delete an article
-@api.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@api.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT, tags=["articles"])
 async def delete_article(article: ArticleTortoise = Depends(get_article_or_404)) -> None:
     await article.delete()
 
