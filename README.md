@@ -16,3 +16,13 @@ The API was built by following best practices for Professional Python projects, 
 5. Isort for sorting python imports.
 
 6. Pytest for testing the code
+
+## Model
+
+The Article model has the following field;
+
+- id: primary_key, auto_generated
+- title: str = Title of article
+- body:str = body of the article
+- publication_date: datetime = publication date of the article
+- updated_at: datetime = 
