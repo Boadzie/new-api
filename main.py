@@ -6,7 +6,7 @@ from tortoise.contrib.fastapi import register_tortoise
 
 # modules import
 from app.models import ArticleTortoise
-from app.schemas import ArticleBase, ArticleCreate, ArticleDB, ArticlePartialUpdate
+from app.schemas import ArticleCreate, ArticleDB, ArticlePartialUpdate
 from app.utils import get_article_or_404, pagination
 
 api = FastAPI()
@@ -14,7 +14,7 @@ api = FastAPI()
 
 # create a new article
 @api.post("/articles", response_model=ArticleDB, status_code=status.HTTP_201_CREATED)
-async def create_article(article: ArticleCreate):
+async def create_article(article: ArticleCreate) -> List[ArticleDB]:
     article_db = await ArticleTortoise.create(**article.dict())
     return ArticleDB.from_orm(article_db)
 
@@ -38,7 +38,8 @@ async def get_article(article_id: int) -> ArticleDB:
 # update an article
 @api.patch("/articles/{article_id}", response_model=ArticleDB)
 async def update_article(
-    article_update: ArticlePartialUpdate, article: ArticleTortoise = Depends(get_article_or_404)
+    article_update: ArticlePartialUpdate,
+    article: ArticleTortoise = Depends(get_article_or_404),
 ) -> ArticleDB:
     article.update_from_dict(article_update.dict(exclude_unset=True))
     await article.save()
@@ -47,7 +48,7 @@ async def update_article(
 
 # delete an article
 @api.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_article(article: ArticleTortoise = Depends(get_article_or_404)):
+async def delete_article(article: ArticleTortoise = Depends(get_article_or_404)) -> None:
     await article.delete()
 
 
