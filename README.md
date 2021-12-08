@@ -19,7 +19,7 @@ The API was built by following best practices for Professional Python projects, 
 
 ## Model
 
-The Article model has the following field;
+The Article model has the following fields;
 
 - id: primary_key, auto_generated
 - title: str = Title of article
