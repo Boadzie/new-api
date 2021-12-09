@@ -25,4 +25,11 @@ The Article model has the following fields;
 - title: str = Title of article
 - body:str = body of the article
 - publication_date: datetime = publication date of the article
-- updated_at: datetime = 
+- updated_at: datetime = last time article was updated at
+
+The Comment Model has the following properties;
+
+- id: primary_key, auto_generated
+- content: string = The text content of the comment
+- article_id: int = A relationship with the article
+
