@@ -2,7 +2,7 @@ from typing import Tuple
 
 from fastapi import Query
 
-from app.models import ArticleTortoise
+from app.models.article import ArticleTortoise
 
 
 # pagination query

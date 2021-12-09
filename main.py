@@ -5,8 +5,7 @@ from fastapi import Depends, FastAPI, status
 from tortoise.contrib.fastapi import register_tortoise
 
 # modules import
-from app.models import ArticleTortoise
-from app.schemas import ArticleCreate, ArticleDB, ArticlePartialUpdate
+from app.routers.articles import router as articles_router
 from app.utils import get_article_or_404, pagination
 
 # openapi_tags
@@ -28,45 +27,8 @@ api = FastAPI(
     },
 )
 
-
-# create a new article
-@api.post("/articles", response_model=ArticleDB, status_code=status.HTTP_201_CREATED, tags=["articles"])
-async def create_article(article: ArticleCreate) -> List[ArticleDB]:
-    article_db = await ArticleTortoise.create(**article.dict())
-    return ArticleDB.from_orm(article_db)
-
-
-# get all articles
-@api.get("/articles", response_model=List[ArticleDB], tags=["articles"])
-async def get_articles(pagination: Tuple[int, int] = Depends(pagination)) -> List[ArticleDB]:
-    skip, limit = pagination
-    articles = await ArticleTortoise.all().offset(skip).limit(limit)
-    results = [ArticleDB.from_orm(article) for article in articles]
-    return results
-
-
-# get a single article
-@api.get("/articles/{article_id}", response_model=ArticleDB, tags=["articles"])
-async def get_article(article_id: int) -> ArticleDB:
-    article = await get_article_or_404(article_id)
-    return ArticleDB.from_orm(article)
-
-
-# update an article
-@api.patch("/articles/{article_id}", response_model=ArticleDB, tags=["articles"])
-async def update_article(
-    article_update: ArticlePartialUpdate,
-    article: ArticleTortoise = Depends(get_article_or_404),
-) -> ArticleDB:
-    article.update_from_dict(article_update.dict(exclude_unset=True))
-    await article.save()
-    return ArticleDB.from_orm(article)
-
-
-# delete an article
-@api.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT, tags=["articles"])
-async def delete_article(article: ArticleTortoise = Depends(get_article_or_404)) -> None:
-    await article.delete()
+# register routers
+api.include_router(articles_router, prefix="/articles", tags=["articles"])
 
 
 # add tortoise ORM Config
@@ -74,7 +36,7 @@ TORTOISE_ORM = {
     "connections": {"default": "sqlite://news.db"},
     "apps": {
         "models": {
-            "models": ["app.models"],
+            "models": ["app.models.article"],
             "default_connection": "default",
         },
     },
