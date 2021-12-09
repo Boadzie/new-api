@@ -28,7 +28,7 @@ class ArticleDB(ArticleBase):
     id: int
 
 
-class PostPublic(ArticleDB):
+class ArticlePublic(ArticleDB):
     comments: List[CommentDB]
 
     @validator("comments", pre=True)

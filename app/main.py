@@ -9,16 +9,7 @@ from app.routers.articles import router as articles_router
 from app.routers.comments import router as comments_router
 from app.utils import get_article_or_404, pagination
 
-# openapi_tags
-tags_metadata = [
-    {
-        "name": "Articles",
-        "description": "<h4>CRUD operation for Articles.<h4>",
-    }
-]
-
 api = FastAPI(
-    openapi_tags=tags_metadata,
     title="Newsman",
     description="<h3>News API with Articles, Comments and Best Practices<h3>",
     contact={
@@ -29,8 +20,8 @@ api = FastAPI(
 )
 
 # register routers
-api.include_router(articles_router, prefix="/articles", tags=["articles"])
-api.include_router(comments_router, prefix="/comments", tags=["comments"])
+api.include_router(articles_router)
+api.include_router(comments_router)
 
 # add tortoise ORM Config
 MODELS = ["app.models.model"]
