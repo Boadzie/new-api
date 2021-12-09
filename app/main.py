@@ -6,6 +6,7 @@ from tortoise.contrib.fastapi import register_tortoise
 
 # modules import
 from app.routers.articles import router as articles_router
+from app.routers.comments import router as comments_router
 from app.utils import get_article_or_404, pagination
 
 # openapi_tags
@@ -29,17 +30,13 @@ api = FastAPI(
 
 # register routers
 api.include_router(articles_router, prefix="/articles", tags=["articles"])
-
+api.include_router(comments_router, prefix="/comments", tags=["comments"])
 
 # add tortoise ORM Config
+MODELS = ["app.models.model"]
 TORTOISE_ORM = {
     "connections": {"default": "sqlite://news.db"},
-    "apps": {
-        "models": {
-            "models": ["app.models.article"],
-            "default_connection": "default",
-        },
-    },
+    "apps": {"models": {"models": MODELS, "default_connection": "default"}},
 }
 
 # register orm config

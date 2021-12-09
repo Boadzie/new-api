@@ -2,12 +2,12 @@ from typing import List, Tuple
 
 from fastapi import APIRouter, Depends, status
 
-from app.models.article import (
+from app.models.model import ArticleTortoise
+from app.schemas.article import (
     ArticleBase,
     ArticleCreate,
     ArticleDB,
     ArticlePartialUpdate,
-    ArticleTortoise,
 )
 from app.utils import get_article_or_404, pagination
 
