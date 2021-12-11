@@ -4,3 +4,4 @@ app/__pycache__/main.cpython-39.pyc
 app/models/__pycache__
 app/routers/__pycache__
 app/schemas/__pycache__
+migrations/__pycache__

@@ -10,6 +10,7 @@ fastapi = "^0.70.0"
 uvicorn = {extras = ["standard"], version = "^0.15.0"}
 tortoise-orm = "^0.17.4"
 email-validator = "^1.1.3"
+aerich = "^0.6.0"
 
 [tool.poetry.dev-dependencies]
 black = "^21.12b0"
@@ -18,6 +19,11 @@ flake8 = "^4.0.1"
 mypy = "^0.910"
 pytest = "^6.2.5"
 
+
+[tool.aerich]
+tortoise_orm = "app.main.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

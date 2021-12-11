@@ -24,7 +24,7 @@ api.include_router(articles_router)
 api.include_router(comments_router)
 
 # add tortoise ORM Config
-MODELS = ["app.models.model"]
+MODELS = ["app.models.model", "aerich.models"]
 TORTOISE_ORM = {
     "connections": {"default": "sqlite://news.db"},
     "apps": {"models": {"models": MODELS, "default_connection": "default"}},
