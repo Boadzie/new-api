@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  web:
+    image: news_api
+    build: .
+    command: poetry run uvicorn app.main:api --host 0.0.0.0
+    volumes:
+      - .:/main
+    ports:
+      - 8008:8000
