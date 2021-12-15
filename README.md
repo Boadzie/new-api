@@ -53,6 +53,8 @@ The Comment Model has the following properties;
 
 6. Docker support for containerization
 
+7. Add Async Test to API using Pytest
+
 ## How to run the API
 
 first build the docker image by running the following command;
