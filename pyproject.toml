@@ -11,6 +11,7 @@ uvicorn = {extras = ["standard"], version = "^0.15.0"}
 tortoise-orm = "^0.17.4"
 email-validator = "^1.1.3"
 aerich = "^0.6.0"
+httpx = "^0.21.1"
 
 [tool.poetry.dev-dependencies]
 black = "^21.12b0"
@@ -18,6 +19,8 @@ isort = "^5.10.1"
 flake8 = "^4.0.1"
 mypy = "^0.910"
 pytest = "^6.2.5"
+pytest-asyncio = "^0.16.0"
+asgi-lifespan = "^1.0.1"
 
 
 [tool.aerich]
