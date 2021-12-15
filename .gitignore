@@ -1,4 +1,6 @@
 __pycache__
+.mypy_cache
+.pytest_cache
 app/__pycache__
 app/__pycache__/main.cpython-39.pyc
 app/models/__pycache__
