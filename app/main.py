@@ -19,6 +19,17 @@ api = FastAPI(
     },
 )
 
+
+@api.on_event("startup")
+async def startup():
+    print("Startup")
+
+
+@api.on_event("shutdown")
+async def shutdown():
+    print("Shutdown")
+
+
 # register routers
 api.include_router(articles_router)
 api.include_router(comments_router)
