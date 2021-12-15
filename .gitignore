@@ -8,3 +8,4 @@ app/routers/__pycache__
 app/schemas/__pycache__
 migrations/__pycache__
 tests/__pycache__
+app/__pycache__/main.cpython-39.pyc
