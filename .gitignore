@@ -5,3 +5,4 @@ app/models/__pycache__
 app/routers/__pycache__
 app/schemas/__pycache__
 migrations/__pycache__
+tests/__pycache__
